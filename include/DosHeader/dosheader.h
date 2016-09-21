@@ -1,7 +1,7 @@
 #ifndef DOSHEADER
 #define DOSHEADER
 
-#include "peheader.h"
+#include "PE_Signature/peheader.h"
 
 class DosHeader : protected Header
 {

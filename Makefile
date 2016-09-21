@@ -1,46 +1,31 @@
-all: pe clean_object
+#BASEDIR = .
+INC = -I./include
+#SRC = $(BASEDIR)/src
 
-pe: main.o peheader.o dosheader.o datadirectory.o fileheader.o ntheader.o optionalheader.o importtable.o sectionheader.o peloader.o pefile.o peprinter.o 
-	g++ main.o peheader.o dosheader.o datadirectory.o fileheader.o ntheader.o optionalheader.o importtable.o sectionheader.o peloader.o pefile.o peprinter.o -o pe
+CC = g++
+CFLAGS  = -Wall -g
 
-main.o: main.cpp
-		g++ -c main.cpp
+SRCS = $(shell find . -name "*.cpp")
+#SRCS = main.cpp PE_Signature/peheader.cpp dosheader.cpp datadirectory.cpp fileheader.cpp ntheader.cpp optionalheader.cpp importtable.cpp sectionheader.cpp peloader.cpp pefile.cpp peprinter.cpp 
+OBJS = $(SRCS:.cpp=.o)
 
-peheader.o: peheader.cpp
-		g++ -c peheader.cpp
+MAIN = pe
 
-dosheader.o: dosheader.cpp
-		g++ -c dosheader.cpp
+default: all
 
-datadirectory.o: datadirectory.cpp
-		g++ -c datadirectory.cpp
+all: $(MAIN) clean_object
 
-fileheader.o: fileheader.cpp
-		g++ -c fileheader.cpp
+$(MAIN): $(OBJS)
+	$(CC) $(CFLAGS) $(INC) -o $(MAIN) $(OBJS)
 
-ntheader.o: ntheader.cpp
-		g++ -c ntheader.cpp
-
-optionalheader.o: optionalheader.cpp
-		g++ -c optionalheader.cpp
-
-importtable.o: importtable.cpp
-		g++ -c importtable.cpp
-
-sectionheader.o: sectionheader.cpp
-		g++ -c sectionheader.cpp
-
-peloader.o: peloader.cpp
-		g++ -c peloader.cpp
-
-pefile.o: pefile.cpp
-		g++ -c pefile.cpp
-
-peprinter.o: peprinter.cpp
-		g++ -c peprinter.cpp
+.cpp.o:
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 clean_object:
-	rm *o
+	rm $(OBJS)
 
 clean:
-	rm *o pe
+	rm $(OBJS) pe
+
+print_src:
+	echo $(SRCS)

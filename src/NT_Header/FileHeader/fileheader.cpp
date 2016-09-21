@@ -1,4 +1,4 @@
-#include "fileheader.h"
+#include "NT_Header/FileHeader/fileheader.h"
 
 WORD FileHeader::getMachine()
 {

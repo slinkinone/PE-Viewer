@@ -1,4 +1,4 @@
-#include "ntheader.h"
+#include "NT_Header/ntheader.h"
 
 DWORD NTheader::getSignature()
 {

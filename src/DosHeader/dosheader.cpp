@@ -1,4 +1,4 @@
-#include "dosheader.h"
+#include "DosHeader/dosheader.h"
 
 WORD DosHeader::getE_magic()
 {

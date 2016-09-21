@@ -1,4 +1,4 @@
-#include "sectionheader.h"
+#include "SectionHeader/sectionheader.h"
 
 WORD SectionHeader::getNumberOfSection()
 {

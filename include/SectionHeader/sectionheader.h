@@ -1,7 +1,7 @@
 #ifndef SECTIONHEADER
 #define SECTIONHEADER
 
-#include "peheader.h"
+#include "PE_Signature/peheader.h"
 
 class SectionHeader : protected Header
 {

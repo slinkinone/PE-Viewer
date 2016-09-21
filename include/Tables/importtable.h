@@ -1,7 +1,7 @@
 #ifndef IMPORTTABLE
 #define IMPORTTABLE
 
-#include "peheader.h"
+#include "PE_Signature/peheader.h"
 
 #define SIZE_ROW_IMPORT_TABLE 5*sizeof(DWORD)
 
