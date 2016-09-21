@@ -1,7 +1,7 @@
 #ifndef OPTIONALHEADER
 #define OPTIONALHEADER
 
-#include "peheader.h"
+#include "PE_Signature/peheader.h"
 
 class OptionalHeader : protected Header
 {

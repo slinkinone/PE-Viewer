@@ -1,7 +1,7 @@
 #ifndef FILEHEADER
 #define FILEHEADER
 
-#include "peheader.h"
+#include "PE_Signature/peheader.h"
 
 class FileHeader : protected Header
 {
