@@ -5,29 +5,28 @@
 
 class SectionHeader : protected Header
 {
-private:
-    DWORD sectionAligment;
-    WORD numberOfSection;
-    char** sections;
-
 public:
-    SectionHeader() : Header(NULL), sectionAligment(0), numberOfSection(0), sections(NULL) {}
-    SectionHeader(const char* pBuf, DWORD secAlig) : Header(pBuf), sectionAligment(secAlig), numberOfSection(0), sections(NULL) {}
+    SectionHeader() : Header(NULL), _sectionAligment(0), _numberOfSection(0), _sections(NULL) {}
+    SectionHeader(const char* pBuf, DWORD secAlig) : Header(pBuf), _sectionAligment(secAlig), _numberOfSection(0), _sections(NULL) {}
     ~SectionHeader() {}
 
-    WORD getNumberOfSection();
-    void setNumberOfSection(WORD value);
-    void fillSections();
-    int defSection(DWORD rva);
+    WORD GetNumberOfSection();
+    void SetNumberOfSection(WORD value);
+    void FillSections();
+    int DefSection(DWORD rva);
 
-    char* getName(int index);
-    DWORD getVirtualAddress(uint16_t index);
-    DWORD getVirtualSize(int index);
-    DWORD getSizeOfRawData(int index);
-    DWORD getPointerToRawData(int index);
-    DWORD getSectionAlignment();
-    void setSectionAlignment(DWORD value);
+    char* GetName(int index);
+    DWORD GetVirtualAddress(uint16_t index);
+    DWORD GetVirtualSize(int index);
+    DWORD GetSizeOfRawData(int index);
+    DWORD GetPointerToRawData(int index);
+    DWORD GetSectionAlignment();
+    void SetSectionAlignment(DWORD value);
 
+private:
+    DWORD _sectionAligment;
+    WORD _numberOfSection;
+    char** _sections;
 };
 
 #endif // SECTIONHEADER

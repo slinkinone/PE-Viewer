@@ -6,24 +6,24 @@ int main(int argc, char** argv)
 {
 	if (argc < 2)
 	{
-		printf("%s\n", "path to file not define");
+        printf("%s\n", "Path to file is not defined");
 		return 1;
 	}
 	else
 		printf("%s\n", argv[1]);
 
 	PEprinter pe(argv[1]);
-	if(pe.getState() == 0)
+    if(pe.GetState() == 0)
 	{
-		pe.setFormat(16);
+        pe.SetFormat(16);
 
-		pe.printAddressOfEntryPoint();
-		pe.printImageBase();
-		pe.printSections();
-		pe.printImportTable();
+        pe.PrintAddressOfEntryPoint();
+        pe.PrintImageBase();
+        pe.PrintSections();
+        pe.PrintImportTable();
 	}
 	else
-		pe.printError();
+        pe.PrintError();
 
 	return 0;
 }

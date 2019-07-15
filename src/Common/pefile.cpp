@@ -2,131 +2,134 @@
 
 PEfile::PEfile(char *path)
 {
-    loader = new PEloader(path);
+    _loader = new PEloader(path);
 
-    if(loader->getState() == 0)
+    if(_loader->GetState() == 0)
     {
-        buf = loader->getBuf();
+        _buf = _loader->GetBuf();
 
-        state = check();
-        if(state == 0)
-            initAll();
+        _state = Check();
+        if(_state == 0)
+            InitAll();
     }
-    else state = -1;
+    else _state = -1;
 }
 
-int PEfile::check()
+int PEfile::Check()
 {
-    if (READ_WORD(buf) != 0x5A4D)
+    if (READ_WORD(_buf) != 0x5A4D)
         return 1;
 
-    if (READ_DWORD(buf + READ_DWORD(buf + 30*sizeof(WORD))) != 0x4550)
+    if (READ_DWORD(_buf + READ_DWORD(_buf + 30*sizeof(WORD))) != 0x4550)
         return 2;
 
     return 0;
 }
 
-int PEfile::getState()
+int PEfile::GetState()
 {
-    return state;
+    return _state;
 }
 
-void PEfile::initDosHead()
+void PEfile::InitDosHead()
 {
-    dosHead = new DosHeader(buf);
+    _dosHead = new DosHeader(_buf);
 }
 
-void PEfile::initNtHead()
+void PEfile::InitNtHead()
 {
-    ntHead = new NTheader(
-                buf + READ_DWORD(buf + 30*sizeof(WORD))                                                 //  buf + dosHead->getE_lfanew()
+    _ntHead = new NTheader(
+                _buf + READ_DWORD(_buf + 30*sizeof(WORD))                                                 //  buf + dosHead->getE_lfanew()
                 );
 }
 
-void PEfile::initFileHead()
+void PEfile::InitFileHead()
 {
-    fileHead = new FileHeader(
-                buf + READ_DWORD(buf + 30*sizeof(WORD))                                                 //  ntHeader + sizeof(DWORD)
+    _fileHead = new FileHeader(
+                _buf + READ_DWORD(_buf + 30*sizeof(WORD))                                                 //  ntHeader + sizeof(DWORD)
                         + sizeof(DWORD)
                 );
 }
 
-void PEfile::initOptHead()
+void PEfile::InitOptHead()
 {
-    optHead = new OptionalHeader(
-                buf + READ_DWORD(buf + 30 * sizeof(WORD))                                               //  fHead + 3*sizeof(DWORD) + 4*sizeof(WORD)
+    _optHead = new OptionalHeader(
+                _buf + READ_DWORD(_buf + 30 * sizeof(WORD))                                               //  fHead + 3*sizeof(DWORD) + 4*sizeof(WORD)
                     + sizeof(DWORD) + 3*sizeof(DWORD) + 4*sizeof(WORD)
                 );
 }
 
-void PEfile::initDataDir()
+void PEfile::InitDataDir()
 {
-    dataDir = new DataDirectory(
-                buf + READ_DWORD(buf + 30 * sizeof(WORD))                                               //  optHead + 9 * sizeof(WORD) + 2 * sizeof(BYTE) + 19 * sizeof(DWORD)
+    _dataDir = new DataDirectory(
+                _buf + READ_DWORD(_buf + 30 * sizeof(WORD))                                               //  optHead + 9 * sizeof(WORD) + 2 * sizeof(BYTE) + 19 * sizeof(DWORD)
                     + sizeof(DWORD) + 3*sizeof(DWORD) + 4*sizeof(WORD)
                     + 9 * sizeof(WORD) + 2 * sizeof(BYTE) + 19 * sizeof(DWORD)
                 );
 
-    dataDir->fillDirs();
+    _dataDir->FillDirs();
 }
 
-void PEfile::initSecHead()
+void PEfile::InitSecHead()
 {
-    secHead = new SectionHeader(
-                buf + READ_DWORD(buf + 30 * sizeof(WORD))
+    _secHead = new SectionHeader(
+                _buf + READ_DWORD(_buf + 30 * sizeof(WORD))
                     + sizeof(DWORD) + 3*sizeof(DWORD) + 4*sizeof(WORD)
                     + 9 * sizeof(WORD) + 2 * sizeof(BYTE) + 19 * sizeof(DWORD) + 16 * (2 * sizeof(DWORD))   //  optHead +  9 * sizeof(WORD) + 2 * sizeof(BYTE) + 19 * sizeof(DWORD) + 16 * (2 * sizeof(DWORD))
-                , optHead->getSectionAlignment());
+                , _optHead->GetSectionAlignment());
 
-    secHead->setNumberOfSection(fileHead->getNumberOfSections());
-    secHead->fillSections();
+    _secHead->SetNumberOfSection(_fileHead->GetNumberOfSections());
+    _secHead->FillSections();
 }
 
-void PEfile::initImpTable()
+void PEfile::InitImpTable()
 {
-    int indexSection = secHead->defSection(dataDir->getVirtualAddress(1));
-    impTable = new ImportTable(
-                    buf + dataDir->getVirtualAddress(1) - secHead->getVirtualAddress(indexSection) + secHead->getPointerToRawData(indexSection)
+    int indexSection = _secHead->DefSection(_dataDir->GetVirtualAddress(1));
+    _impTable = new ImportTable(
+                    _buf + _dataDir->GetVirtualAddress(1)
+                    - _secHead->GetVirtualAddress(indexSection)
+                    + _secHead->GetPointerToRawData(indexSection)
                 );
-    impTable->fillTable();
+    _impTable->FillTable();
 }
 
-DWORD PEfile::rvaToOff(DWORD rva)
+DWORD PEfile::RvaToOff(DWORD rva)
 {
-    int indexSection = secHead->defSection(rva);
+    int indexSection = _secHead->DefSection(rva);
     if(indexSection != -1)
-        return rva - secHead->getVirtualAddress(indexSection) + secHead->getPointerToRawData(indexSection);
+        return rva - _secHead->GetVirtualAddress(indexSection)
+                    + _secHead->GetPointerToRawData(indexSection);
     else
         return 0;
 }
 
-const char* PEfile::getPointerThunkData(uint32_t index)
+const char* PEfile::GetPointerThunkData(uint32_t index)
 {
-    return buf + rvaToOff(impTable->getFirstThunk(index));                                                  // IMAGE_THUNK_DATA
+    return _buf + RvaToOff(_impTable->GetFirstThunk(index));                                                  // IMAGE_THUNK_DATA
 }
 
-void PEfile::initAll()
+void PEfile::InitAll()
 {
-    initDosHead();
-    initNtHead();
-    initFileHead();
-    initOptHead();
-    initDataDir();
-    initSecHead();
-    initImpTable();
+    InitDosHead();
+    InitNtHead();
+    InitFileHead();
+    InitOptHead();
+    InitDataDir();
+    InitSecHead();
+    InitImpTable();
 }
 
 PEfile::~PEfile()
 {
-    if(state == -1)
+    if(_state == -1)
         return;
 
-    delete loader;
-    delete dosHead;
-    delete ntHead;
-    delete fileHead;
-    delete optHead;
-    delete dataDir;
-    delete secHead;
-    delete impTable;
+    delete _loader;
+    delete _dosHead;
+    delete _ntHead;
+    delete _fileHead;
+    delete _optHead;
+    delete _dataDir;
+    delete _secHead;
+    delete _impTable;
 }

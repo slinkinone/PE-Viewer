@@ -17,43 +17,44 @@
 
 class PEfile
 {
-private:
-    int state;
-
-protected:
-    const char* buf;
-
-    PEloader* loader;
-    DosHeader* dosHead;
-    NTheader* ntHead;
-    FileHeader* fileHead;
-    OptionalHeader* optHead;
-    DataDirectory* dataDir;
-    SectionHeader* secHead;
-    ImportTable* impTable;
-
-    void initDosHead();
-    void initNtHead();
-    void initFileHead();
-    void initOptHead();
-    void initDataDir();
-    void initSecHead();
-    void initImpTable();
-
-    void initAll();
-
-    int check();
-    const char* getPointerThunkData(uint32_t index);
-    DWORD rvaToOff(DWORD rva);
-
 public:
-    PEfile() : state(-1), loader (NULL), dosHead(NULL), ntHead(NULL), fileHead(NULL), optHead(NULL),
-                dataDir(NULL), secHead(NULL), impTable(NULL) {}
+    PEfile() : _state(-1), _loader (NULL), _dosHead(NULL), _ntHead(NULL), _fileHead(NULL), _optHead(NULL),
+                _dataDir(NULL), _secHead(NULL), _impTable(NULL) {}
     PEfile(char* path);
     ~PEfile();
 
-    void reload(char* path);
-    int getState();
+    void Reload(char* path);
+    int GetState();
+
+    void InitAll();
+
+    int Check();
+    const char* GetPointerThunkData(uint32_t index);
+    DWORD RvaToOff(DWORD rva);
+
+private:
+    void InitDosHead();
+    void InitNtHead();
+    void InitFileHead();
+    void InitOptHead();
+    void InitDataDir();
+    void InitSecHead();
+    void InitImpTable();
+
+protected:
+    const char* _buf;
+
+    PEloader* _loader;
+    DosHeader* _dosHead;
+    NTheader* _ntHead;
+    FileHeader* _fileHead;
+    OptionalHeader* _optHead;
+    DataDirectory* _dataDir;
+    SectionHeader* _secHead;
+    ImportTable* _impTable;
+
+private:
+    int _state;
 };
 
 #endif // PEFILE

@@ -1,30 +1,30 @@
 #include "SectionHeader/sectionheader.h"
 
-WORD SectionHeader::getNumberOfSection()
+WORD SectionHeader::GetNumberOfSection()
 {
-    return numberOfSection;
+    return _numberOfSection;
 }
 
-void SectionHeader::setNumberOfSection(WORD value)
+void SectionHeader::SetNumberOfSection(WORD value)
 {
-    numberOfSection = value;
+    _numberOfSection = value;
 }
 
-void SectionHeader::fillSections()
+void SectionHeader::FillSections()
 {
-    free(sections);
-    sections = (char**)malloc(numberOfSection * sizeof(char*));
+    free(_sections);
+    _sections = (char**)malloc(_numberOfSection * sizeof(char*));
 
-    for (int i = 0; i < numberOfSection; ++i)
-      sections[i] = (char*)pointer + i*(8*sizeof(BYTE) + 2*sizeof(WORD) + 7*sizeof(DWORD));
+    for (int i = 0; i < _numberOfSection; ++i)
+      _sections[i] = (char*)pointer + i*(8*sizeof(BYTE) + 2*sizeof(WORD) + 7*sizeof(DWORD));
 }
 
-int SectionHeader::defSection(DWORD rva)
+int SectionHeader::DefSection(DWORD rva)
 {
-    for (int i = 0; i < numberOfSection; ++i)
+    for (int i = 0; i < _numberOfSection; ++i)
     {
-        DWORD start = getVirtualAddress(i);                         //  def border section
-        DWORD end = start + ALIGN_UP(getVirtualSize(i), sectionAligment);
+        DWORD start = GetVirtualAddress(i);                         //  def border section
+        DWORD end = start + ALIGN_UP(GetVirtualSize(i), _sectionAligment);
 
         if(rva >= start && rva < end)
             return i;
@@ -32,38 +32,38 @@ int SectionHeader::defSection(DWORD rva)
     return -1;
 }
 
-char* SectionHeader::getName(int index)
+char* SectionHeader::GetName(int index)
 {
-    return sections[index];
+    return _sections[index];
 }
 
-DWORD SectionHeader::getVirtualAddress(uint16_t index)
+DWORD SectionHeader::GetVirtualAddress(uint16_t index)
 {
-    return READ_DWORD(sections[index] + 8*sizeof(BYTE) + sizeof(DWORD));
+    return READ_DWORD(_sections[index] + 8*sizeof(BYTE) + sizeof(DWORD));
 }
 
 
-DWORD SectionHeader::getVirtualSize(int index)
+DWORD SectionHeader::GetVirtualSize(int index)
 {
-    return READ_DWORD(sections[index] + 8*sizeof(BYTE));
+    return READ_DWORD(_sections[index] + 8*sizeof(BYTE));
 }
 
-DWORD SectionHeader::getSizeOfRawData(int index)
+DWORD SectionHeader::GetSizeOfRawData(int index)
 {
-    return READ_DWORD(sections[index] + 8*sizeof(BYTE) + 2*sizeof(DWORD));
+    return READ_DWORD(_sections[index] + 8*sizeof(BYTE) + 2*sizeof(DWORD));
 }
 
-DWORD SectionHeader::getPointerToRawData(int index)
+DWORD SectionHeader::GetPointerToRawData(int index)
 {
-    return READ_DWORD(sections[index] + 8*sizeof(BYTE) + 3*sizeof(DWORD));
+    return READ_DWORD(_sections[index] + 8*sizeof(BYTE) + 3*sizeof(DWORD));
 }
 
-DWORD SectionHeader::getSectionAlignment()
+DWORD SectionHeader::GetSectionAlignment()
 {
-    return sectionAligment;
+    return _sectionAligment;
 }
 
-void SectionHeader::setSectionAlignment(DWORD value)
+void SectionHeader::SetSectionAlignment(DWORD value)
 {
-    sectionAligment = value;
+    _sectionAligment = value;
 }

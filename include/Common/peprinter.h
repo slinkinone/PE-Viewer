@@ -10,14 +10,14 @@ public:
     PEprinter() : PEfile() {}
     PEprinter(char* path) : PEfile(path) {}
 
-    void setFormat(uint8_t type);
+    void SetFormat(uint8_t type);
 
-    void printSections();
-    void printAddressOfEntryPoint();
-    void printImageBase();
+    void PrintSections();
+    void PrintAddressOfEntryPoint();
+    void PrintImageBase();
 
-    void printImportTable();
-    void printError();
+    void PrintImportTable();
+    void PrintError();
 };
 
 #endif // PEPRINTER

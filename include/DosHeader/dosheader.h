@@ -10,8 +10,8 @@ public:
     DosHeader(const char* pBuf) : Header(pBuf) {}
     ~DosHeader() {}
 
-    WORD getE_magic();
-    DWORD getE_lfanew();
+    WORD GetE_magic();
+    DWORD GetE_lfanew();
 };
 
 #endif // DOSHEADER

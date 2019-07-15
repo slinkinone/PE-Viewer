@@ -7,17 +7,17 @@ const uint8_t numberOfDirs = 16;
 
 class DataDirectory : protected Header
 {
-protected:
-    char* dirs[numberOfDirs];
-
 public:
     DataDirectory() : Header(NULL) {}
     DataDirectory(const char* pBuf) : Header(pBuf) {}
     ~DataDirectory() {}
 
-    void fillDirs();
-    DWORD getVirtualAddress(uint8_t index);
-    DWORD getSize(uint8_t index);
+    void FillDirs();
+    DWORD GetVirtualAddress(uint8_t index);
+    DWORD GetSize(uint8_t index);
+
+protected:
+    char* _dirs[numberOfDirs];
 };
 
 #endif // DATADIRECTORY

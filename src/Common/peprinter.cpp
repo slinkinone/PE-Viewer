@@ -1,8 +1,8 @@
 #include "Common/peprinter.h"
 
-void PEprinter::printError()
+void PEprinter::PrintError()
 {
-    int idErr = getState();
+    int idErr = GetState();
 
     switch (idErr)
     {
@@ -19,7 +19,7 @@ void PEprinter::printError()
     }
 }
 
-void PEprinter::setFormat(uint8_t type)
+void PEprinter::SetFormat(uint8_t type)
 {
     switch (type)
     {
@@ -36,33 +36,33 @@ void PEprinter::setFormat(uint8_t type)
     }
 }
 
-void PEprinter::printSections()
+void PEprinter::PrintSections()
 {
-    WORD numberOfSections = fileHead->getNumberOfSections();
+    WORD numberOfSections = _fileHead->GetNumberOfSections();
 
     std::cout << std::endl;
     for (int i = 0; i < numberOfSections; ++i)
     {
-        std::cout << secHead->getName(i) << std::endl;
+        std::cout << _secHead->GetName(i) << std::endl;
         std::cout << "---------------------" << std::endl;
-        std::cout << "VirtualAddress:\t" << secHead->getVirtualAddress(i) << std::endl;
-        std::cout << "VirtualSize:\t" << secHead->getVirtualSize(i) << std::endl;
-        std::cout << "SizeOfRawData:\t" << secHead->getSizeOfRawData(i) << std::endl;
-        std::cout << "PointerToRawData:\t" << secHead->getPointerToRawData(i) << std::endl;
+        std::cout << "VirtualAddress:\t" << _secHead->GetVirtualAddress(i) << std::endl;
+        std::cout << "VirtualSize:\t" << _secHead->GetVirtualSize(i) << std::endl;
+        std::cout << "SizeOfRawData:\t" << _secHead->GetSizeOfRawData(i) << std::endl;
+        std::cout << "PointerToRawData:\t" << _secHead->GetPointerToRawData(i) << std::endl;
         std::cout << std::endl;
     }
 }
 
-void PEprinter::printImportTable()
+void PEprinter::PrintImportTable()
 {
-    for (uint32_t i = 0; i < impTable->getCount(); ++i)
+    for (uint32_t i = 0; i < _impTable->GetCount(); ++i)
     {
-        const char* dllName = buf + rvaToOff(impTable->getName(i));
-        const char* pThunk = getPointerThunkData(i);
+        const char* dllName = _buf + RvaToOff(_impTable->GetName(i));
+        const char* pThunk = GetPointerThunkData(i);
 
         while (true)
         {
-            const char* pImpByName = buf + rvaToOff(READ_DWORD(pThunk));            // IMAGE_IMPORT_BY_NAME
+            const char* pImpByName = _buf + RvaToOff(READ_DWORD(pThunk));            // IMAGE_IMPORT_BY_NAME
             printf("<%s>.<%s>\n", dllName, pImpByName + sizeof(WORD));              // hint sizeof(WORD)
 
             pThunk = pThunk + sizeof(DWORD);
@@ -74,12 +74,12 @@ void PEprinter::printImportTable()
     }
 }
 
-void PEprinter::printAddressOfEntryPoint()
+void PEprinter::PrintAddressOfEntryPoint()
 {
-    std::cout << "AddressOfEntryPoint:\t" << optHead->getAddressOfEntryPoint() << std::endl;
+    std::cout << "AddressOfEntryPoint:\t" << _optHead->GetAddressOfEntryPoint() << std::endl;
 }
 
-void PEprinter::printImageBase()
+void PEprinter::PrintImageBase()
 {
-    std::cout << "ImageBase:\t" << optHead->getImageBase() << std::endl;
+    std::cout << "ImageBase:\t" << _optHead->GetImageBase() << std::endl;
 }

@@ -2,44 +2,44 @@
 
 PEloader::PEloader(char *path)
 {
-    this->path = (char*)malloc(strlen(path));
-    strcpy(this->path, path);
-    state = read();
+    this->_path = (char*)malloc(strlen(path));
+    strcpy(this->_path, path);
+    _state = Read();
 }
 
 PEloader::~PEloader()
 {
-    free(path);
-    free(buf);
+    free(_path);
+    free(_buf);
 }
 
-int PEloader::read()
+int PEloader::Read()
 {
     int state;
     struct stat st;
 
-    if ((state = stat(path, &st))!=0)
+    if ((state = stat(_path, &st))!=0)
     {
-        free(buf);
-        buf = NULL;
-        this->state = state;
+        free(_buf);
+        _buf = NULL;
+        this->_state = state;
     }
 
-    buf = (char*)malloc(st.st_size);
+    _buf = (char*)malloc(st.st_size);
 
-    std::ifstream f(path, std::ifstream::binary);
-    f.read(buf, st.st_size);
+    std::ifstream f(_path, std::ifstream::binary);
+    f.read(_buf, st.st_size);
     f.close();
 
     return state;
 }
 
-const char* PEloader::getBuf() const
+const char* PEloader::GetBuf() const
 {
-    return buf;
+    return _buf;
 }
 
-int PEloader::getState()
+int PEloader::GetState()
 {
-    return state;
+    return _state;
 }

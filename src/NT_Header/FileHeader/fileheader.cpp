@@ -1,11 +1,11 @@
 #include "NT_Header/FileHeader/fileheader.h"
 
-WORD FileHeader::getMachine()
+WORD FileHeader::GetMachine()
 {
     return READ_WORD(pointer);
 }
 
-WORD FileHeader::getNumberOfSections()
+WORD FileHeader::GetNumberOfSections()
 {
     return READ_WORD(pointer + sizeof(WORD));
 }

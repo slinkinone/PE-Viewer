@@ -10,7 +10,7 @@ public:
     NTheader(const char* pBuf) : Header(pBuf) {}
     ~NTheader() {}
 
-    DWORD getSignature();
+    DWORD GetSignature();
 
 };
 

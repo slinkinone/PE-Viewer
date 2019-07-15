@@ -13,22 +13,22 @@
 
 class PEloader
 {
-private:
-    int state;
-
-protected:
-    char* path;
-    char* buf;
-
-    int read();
-
 public:
-    PEloader() : state(-1), path(NULL), buf(NULL) {}
-    PEloader(char* path);
+    PEloader() : _state(-1), _path(NULL), _buf(NULL) {}
+    PEloader(char* _path);
     ~PEloader();
 
-    const char* getBuf() const;
-    int getState();
+    const char* GetBuf() const;
+    int GetState();
+
+private:
+    int _state;
+
+protected:
+    char* _path;
+    char* _buf;
+
+    int Read();
 };
 
 #endif // PELOADER

@@ -10,8 +10,8 @@ public:
     FileHeader(const char* pBuf) : Header(pBuf) {}
     ~FileHeader() {}
 
-    WORD getMachine();
-    WORD getNumberOfSections();
+    WORD GetMachine();
+    WORD GetNumberOfSections();
 };
 
 #endif // FILEHEADER

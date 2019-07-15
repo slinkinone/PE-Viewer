@@ -1,6 +1,6 @@
 #include "NT_Header/ntheader.h"
 
-DWORD NTheader::getSignature()
+DWORD NTheader::GetSignature()
 {
     return READ_DWORD(pointer);
 }

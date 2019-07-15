@@ -10,9 +10,9 @@ public:
     OptionalHeader(const char* pBuf) : Header(pBuf) {}
     ~OptionalHeader() {}
 
-    DWORD getAddressOfEntryPoint();
-    DWORD getImageBase();
-    DWORD getSectionAlignment();
+    DWORD GetAddressOfEntryPoint();
+    DWORD GetImageBase();
+    DWORD GetSectionAlignment();
 };
 
 #endif // OPTIONALHEADER

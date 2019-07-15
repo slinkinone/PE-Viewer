@@ -7,22 +7,22 @@
 
 class ImportTable : protected Header
 {
-private:
-    uint32_t count;
-
 public:
-    ImportTable() : Header(NULL), count(0) {}
-    ImportTable(const char* pBuf) : Header(pBuf), count(0) {}
+    ImportTable() : Header(NULL), _count(0) {}
+    ImportTable(const char* pBuf) : Header(pBuf), _count(0) {}
     ~ImportTable() {}
 
-    DWORD getCount();
-    void fillTable();
+    DWORD GetCount();
+    void FillTable();
 
-    DWORD getOriginalFirstThunk(uint32_t index);
-    DWORD getTimeDateStamp(uint32_t index);
-    DWORD getForwarderChain(uint32_t index);
-    DWORD getName(uint32_t index);
-    DWORD getFirstThunk(uint32_t index);
+    DWORD GetOriginalFirstThunk(uint32_t index);
+    DWORD GetTimeDateStamp(uint32_t index);
+    DWORD GetForwarderChain(uint32_t index);
+    DWORD GetName(uint32_t index);
+    DWORD GetFirstThunk(uint32_t index);
+
+private:
+    uint32_t _count;
 };
 
 #endif // IMPORTTABLE

@@ -1,11 +1,11 @@
 #include "DosHeader/dosheader.h"
 
-WORD DosHeader::getE_magic()
+WORD DosHeader::GetE_magic()
 {
     return READ_WORD(pointer);
 }
 
-DWORD DosHeader::getE_lfanew()
+DWORD DosHeader::GetE_lfanew()
 {
     return READ_DWORD(pointer + 30 * sizeof(WORD));
 }
