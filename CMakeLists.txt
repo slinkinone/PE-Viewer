@@ -19,7 +19,6 @@ file(GLOB INCLUDE_DIR
     include/Tables/*.h
 )
 
-
 file(GLOB SOURCE_DIR
     src/
     src/Common/*.cpp
