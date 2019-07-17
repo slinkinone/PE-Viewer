@@ -6,7 +6,7 @@ void PEprinter::PrintError()
 
     switch (idErr)
     {
-        case -1:    printf("stat read error (%d)\n", idErr);
+        case -1:    printf("Stat read error (%d)\n", idErr);
                     break;
 
         case 1:     printf("MZ signature error (%d)\n", idErr);
@@ -14,6 +14,10 @@ void PEprinter::PrintError()
 
         case 2:     printf("PE signature error (%d)\n", idErr);
                     break;
+
+        case 3:     printf("x64 architecture isn't supported (%d)\n", idErr);
+                    break;
+
         default:
                     break;
     }

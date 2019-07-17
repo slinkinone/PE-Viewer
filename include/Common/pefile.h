@@ -21,7 +21,7 @@ public:
     PEfile() : _state(-1), _loader (NULL), _dosHead(NULL), _ntHead(NULL), _fileHead(NULL), _optHead(NULL),
                 _dataDir(NULL), _secHead(NULL), _impTable(NULL) {}
     PEfile(char* path);
-    ~PEfile();
+    virtual ~PEfile();
 
     void Reload(char* path);
     int GetState();

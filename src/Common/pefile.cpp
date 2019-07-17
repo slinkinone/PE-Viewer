@@ -8,6 +8,13 @@ PEfile::PEfile(char *path)
     {
         _buf = _loader->GetBuf();
 
+        InitFileHead();
+        if(_fileHead->GetMachine() == 0x8664)
+        {
+            _state = 3;
+            return;
+        }
+
         _state = Check();
         if(_state == 0)
             InitAll();
@@ -121,7 +128,7 @@ void PEfile::InitAll()
 
 PEfile::~PEfile()
 {
-    if(_state == -1)
+    if(_state != 0)
         return;
 
     delete _loader;
