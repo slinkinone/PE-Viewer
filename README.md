@@ -3,5 +3,6 @@ Cross-platform application to static analyse PE (Portable Exacutable)
 
 **x86 ONLY**
 
-![Sections](img/sections.png =400x332)
-![Import Table](img/import_table.png =400x278)
+
+<img src="img/sections.png"  width="750" height="550">
+<img src="img/import_table.png"  width="750" height="550">
