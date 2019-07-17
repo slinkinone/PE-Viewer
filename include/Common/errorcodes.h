@@ -1,0 +1,11 @@
+#ifndef ERRORCODES
+#define ERRORCODES
+
+#define STAT_READ_ERROR -1
+#define NO_ERROR 0
+#define MZ_SIGNATURE_ERROR 1
+#define PE_SIGNATURE_ERROR 2
+#define ARCHITECTURE_ERROR 3
+
+
+#endif // ERRORCODES

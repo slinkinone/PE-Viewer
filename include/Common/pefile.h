@@ -18,8 +18,9 @@
 class PEfile
 {
 public:
-    PEfile() : _state(-1), _loader (NULL), _dosHead(NULL), _ntHead(NULL), _fileHead(NULL), _optHead(NULL),
-                _dataDir(NULL), _secHead(NULL), _impTable(NULL) {}
+    PEfile() : _state(STAT_READ_ERROR), _loader (NULL)
+             , _dosHead(NULL), _ntHead(NULL), _fileHead(NULL), _optHead(NULL)
+             , _dataDir(NULL), _secHead(NULL), _impTable(NULL) {}
     PEfile(char* path);
     virtual ~PEfile();
 

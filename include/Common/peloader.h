@@ -11,10 +11,12 @@
 #include <string.h>
 #include <fstream>
 
+#include "errorcodes.h"
+
 class PEloader
 {
 public:
-    PEloader() : _state(-1), _path(NULL), _buf(NULL) {}
+    PEloader() : _state(STAT_READ_ERROR), _path(NULL), _buf(NULL) {}
     PEloader(char* _path);
     ~PEloader();
 
