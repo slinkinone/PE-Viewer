@@ -9,9 +9,10 @@ PEfile::PEfile(char *path)
         _buf = _loader->GetBuf();
 
         InitFileHead();
-        if(_fileHead->GetMachine() == 0x8664)
+        //if(_fileHead->GetMachine() == 0x8664)
+        if(_fileHead->GetMachine() != 0x014c)
         {
-            _state = 3;
+            _state = ARCHITECTURE_ERROR;
             return;
         }
 
@@ -19,18 +20,18 @@ PEfile::PEfile(char *path)
         if(_state == 0)
             InitAll();
     }
-    else _state = -1;
+    else _state = STAT_READ_ERROR;
 }
 
 int PEfile::Check()
 {
     if (READ_WORD(_buf) != 0x5A4D)
-        return 1;
+        return MZ_SIGNATURE_ERROR;
 
     if (READ_DWORD(_buf + READ_DWORD(_buf + 30*sizeof(WORD))) != 0x4550)
-        return 2;
+        return PE_SIGNATURE_ERROR;
 
-    return 0;
+    return NO_ERROR;
 }
 
 int PEfile::GetState()
